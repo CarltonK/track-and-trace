@@ -1,0 +1,34 @@
+version: '3.6'
+
+services:
+  backend:
+    container_name: backend_app
+    build:
+      context: ./backend
+      dockerfile: docker/dev.Dockerfile
+    volumes:
+      # Binds volume to enable working through docker locally
+      - type: bind
+        source: ./backend/src/
+        target: /app/src/
+      - type: bind
+        source: ./backend/package.json
+        target: /app/package.json
+      - type: bind
+        source: ./backend/tsconfig.json
+        target: /app/tsconfig.json
+    networks:
+      track-and-trace-network:
+        ipv4_address: 172.45.0.2
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+volumes:
+  track-and-trace:
+networks:
+  track-and-trace-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.45.0.0/16
