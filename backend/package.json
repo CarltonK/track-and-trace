@@ -1,8 +1,8 @@
 {
   "name": "track-and-trace-be",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Track-and-Trace Backend API",
+  "author": "Mark Carlton",
   "private": true,
   "license": "UNLICENSED",
   "engines": {
