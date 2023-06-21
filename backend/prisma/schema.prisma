@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  emailAddress String @unique @db.VarChar(200)
+  item         Item[]
+}
+
+model Item {
+  id        Int          @id @default(autoincrement())
+  addressId Int?         @db.Integer
+  userId    Int          @db.Integer
+  color     String       @db.VarChar(50)
+  price     Float        @db.DoublePrecision
+  createdAt DateTime     @default(now()) @db.Timestamp
+  address   ItemAddress? @relation(fields: [addressId], references: [id])
+  custodian User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ItemEvent {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @db.Timestamp
+}
+
+model ItemAddress {
+  id        Int     @id @default(autoincrement())
+  country   String? @db.VarChar(200)
+  county    String? @db.VarChar(200)
+  town      String? @db.VarChar(200)
+  latitude  Float?
+  longitude Float?
+  item      Item[]
+}

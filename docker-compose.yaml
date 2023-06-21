@@ -1,11 +1,29 @@
 version: '3.6'
 
 services:
+  database:
+    container_name: backend_db
+    image: postgres:14
+    restart: unless-stopped
+    volumes:
+      - track-and-trace:/var/lib/postgresql/data
+    networks:
+      track-and-trace-network:
+        ipv4_address: 172.45.0.3
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "db"
+      PGDATA: /var/lib/postgresql/data/db/
   backend:
     container_name: backend_app
     build:
       context: ./backend
       dockerfile: docker/dev.Dockerfile
+    depends_on:
+      - database
     volumes:
       # Binds volume to enable working through docker locally
       - type: bind
@@ -24,6 +42,7 @@ services:
       - 3000:3000
     environment:
       PORT: 3000
+      DATABASE_URL: 'postgresql://user:password@172.45.0.1:5432/db?schema=public'
 volumes:
   track-and-trace:
 networks:
