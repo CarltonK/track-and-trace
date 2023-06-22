@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { PrismaService } from './../../services/prisma/prisma.service';
@@ -7,24 +7,59 @@ import { PrismaService } from './../../services/prisma/prisma.service';
 export class ItemsService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
-  ) {}
-  create(createItemDto: CreateItemDto) {
-    return 'This action adds a new item';
+  ) { }
+  async create(createItemDto: CreateItemDto) {
+    try {
+      return 'This action adds a new item';
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  findAll() {
-    return `This action returns all items`;
+  async findAll() {
+    try {
+      return `This action returns all items`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} item`;
+  async findOne(id: number) {
+    try {
+      return `This action returns a #${id} item`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+  async update(id: number, updateItemDto: UpdateItemDto) {
+    try {
+      return `This action updates a #${id} item`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(id: number) {
+    try {
+      return `This action removes a #${id} item`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 }

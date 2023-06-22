@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from './../../services/prisma/prisma.service';
@@ -8,23 +8,58 @@ export class UsersService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    try {
+      return 'This action adds a new user';
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    try {
+      return `This action returns all users`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    try {
+      return `This action returns a #${id} user`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      return `This action updates a #${id} user`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    try {
+      return `This action removes a #${id} user`;
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
   }
 }
