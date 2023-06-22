@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { PrismaService } from './../../services/prisma/prisma.service';
 
 @Injectable()
-export class ItemService {
+export class ItemsService {
+  constructor(
+    @Inject(PrismaService) private readonly _prismaService: PrismaService,
+  ) {}
   create(createItemDto: CreateItemDto) {
     return 'This action adds a new item';
   }
 
   findAll() {
-    return `This action returns all item`;
+    return `This action returns all items`;
   }
 
   findOne(id: number) {

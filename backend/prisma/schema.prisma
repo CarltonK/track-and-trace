@@ -17,16 +17,20 @@ model Item {
   id        Int          @id @default(autoincrement())
   addressId Int?         @db.Integer
   userId    Int          @db.Integer
-  color     String       @db.VarChar(50)
+  color     String?      @db.VarChar(50)
   price     Float        @db.DoublePrecision
   createdAt DateTime     @default(now()) @db.Timestamp
   address   ItemAddress? @relation(fields: [addressId], references: [id])
-  custodian User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  custodian User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events    ItemEvent[]
 }
 
 model ItemEvent {
   id        Int      @id @default(autoincrement())
+  title     String?  @db.Text
   createdAt DateTime @default(now()) @db.Timestamp
+  item      Item?    @relation(fields: [itemId], references: [id])
+  itemId    Int?
 }
 
 model ItemAddress {
