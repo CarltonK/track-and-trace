@@ -44,7 +44,7 @@ export class ItemsController {
     });
   }
 
-  @Get()
+  @Get(':id')
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
   async findOne(@Res() res: Response, @Param('id') id: string) {
@@ -56,7 +56,7 @@ export class ItemsController {
     });
   }
 
-  @Patch()
+  @Patch(':id')
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
   async update(
@@ -72,7 +72,7 @@ export class ItemsController {
     });
   }
 
-  @Delete()
+  @Delete(':id')
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
   async remove(@Res() res: Response, @Param('id') id: string) {

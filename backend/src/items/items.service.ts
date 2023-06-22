@@ -11,20 +11,9 @@ export class ItemsService {
   ) { }
   async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
-      const { price, addressId, color, userId, address } = createItemDto;
       return await this._prismaService.item.create({
         data: {
-          price,
-          color,
-          address: {
-            connectOrCreate: {
-              where: { id: addressId },
-              create: { ...address },
-            },
-          },
-          custodian: {
-            connect: { id: userId },
-          },
+          ...createItemDto,
           events: {
             create: { title: 'Item created' },
           },
@@ -41,7 +30,11 @@ export class ItemsService {
   async findAll(): Promise<Item[]> {
     try {
       return await this._prismaService.item.findMany({
-        include: { address: true, custodian: true, events: true },
+        include: {
+          address: true,
+          custodian: true,
+          events: { orderBy: { createdAt: 'desc' } },
+        },
       });
     } catch (error) {
       throw new BadRequestException({
@@ -55,7 +48,7 @@ export class ItemsService {
     try {
       return await this._prismaService.item.findFirst({
         where: { id },
-        include: { address: true, custodian: true, events: true },
+        include: { address: true, custodian: true, events: { orderBy: { createdAt: 'desc' } } },
       });
     } catch (error) {
       throw new BadRequestException({
@@ -67,21 +60,38 @@ export class ItemsService {
 
   async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
-      const { price, color, userId, address } = updateItemDto;
+      const { price, color, custodian, address, title } = updateItemDto;
+
+      let emailAddress: string | null | undefined;
+      if (custodian) {
+        emailAddress = custodian.emailAddress;
+      }
+      
+      let addressId: number | null | undefined;
+      if (address) {
+         addressId = address.id;
+      }
+
       return await this._prismaService.item.update({
         where: { id },
         data: {
           price,
           color,
-          address: { 
-            update: { ...address },
-          },
-          custodian: {
-            update: { id: userId }
-          },
+          address: address ? {
+            connectOrCreate: {
+              create: { ...address },
+              where: { id: addressId },
+            }
+          }: undefined,
+          custodian: custodian ? {
+            connectOrCreate: {
+              where: { ...custodian },
+              create: { emailAddress },
+            }
+          }: undefined,
           events: {
-            create: { title: 'Item updated' }
-          }
+            create: { title: title ? title : 'Item updated' },
+          },
         },
       });
     } catch (error) {
