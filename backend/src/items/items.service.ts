@@ -7,7 +7,7 @@ import { PrismaService } from './../../services/prisma/prisma.service';
 export class ItemsService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
-  ) { }
+  ) {}
   async create(createItemDto: CreateItemDto) {
     try {
       return 'This action adds a new item';

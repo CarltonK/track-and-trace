@@ -18,7 +18,7 @@ import { Response } from 'express';
 
 @Controller('items')
 export class ItemsController {
-  constructor(private readonly _itemsService: ItemsService) { }
+  constructor(private readonly _itemsService: ItemsService) {}
 
   @Post()
   @HttpCode(201)
@@ -59,7 +59,11 @@ export class ItemsController {
   @Patch()
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
-  async update(@Res() res: Response, @Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+  async update(
+    @Res() res: Response,
+    @Param('id') id: string,
+    @Body() updateItemDto: UpdateItemDto,
+  ) {
     const item = await this._itemsService.update(+id, updateItemDto);
     return res.status(HttpStatus.OK).json({
       status: true,

@@ -2,15 +2,18 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from './../../services/prisma/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
   ) {}
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      return 'This action adds a new user';
+      return await this._prismaService.user.create({
+        data: { ...createUserDto },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -19,9 +22,9 @@ export class UsersService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     try {
-      return `This action returns all users`;
+      return await this._prismaService.user.findMany();
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -30,9 +33,11 @@ export class UsersService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<User> {
     try {
-      return `This action returns a #${id} user`;
+      return await this._prismaService.user.findFirst({
+        where: { id },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -41,9 +46,12 @@ export class UsersService {
     }
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     try {
-      return `This action updates a #${id} user`;
+      return await this._prismaService.user.update({
+        where: { id },
+        data: { ...updateUserDto },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -52,9 +60,11 @@ export class UsersService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<User> {
     try {
-      return `This action removes a #${id} user`;
+      return await this._prismaService.user.delete({
+        where: { id },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
