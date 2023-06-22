@@ -2,15 +2,19 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { PrismaService } from './../../services/prisma/prisma.service';
+import { Item } from '@prisma/client';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
   ) {}
-  async create(createItemDto: CreateItemDto) {
+  async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
-      return 'This action adds a new item';
+      const { price, addressId, color, userId } = createItemDto;
+      return await this._prismaService.item.create({
+        data: { price, color, userId, addressId },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -19,9 +23,9 @@ export class ItemsService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<Item[]> {
     try {
-      return `This action returns all items`;
+      return await this._prismaService.item.findMany();
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -30,9 +34,11 @@ export class ItemsService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Item> {
     try {
-      return `This action returns a #${id} item`;
+      return await this._prismaService.item.findFirst({
+        where: { id },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -41,9 +47,12 @@ export class ItemsService {
     }
   }
 
-  async update(id: number, updateItemDto: UpdateItemDto) {
+  async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
-      return `This action updates a #${id} item`;
+      return await this._prismaService.item.update({
+        where: { id },
+        data: { ...updateItemDto },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -52,9 +61,11 @@ export class ItemsService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Item> {
     try {
-      return `This action removes a #${id} item`;
+      return await this._prismaService.item.delete({
+        where: { id },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
