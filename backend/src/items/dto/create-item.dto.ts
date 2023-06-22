@@ -1,3 +1,4 @@
+import { ItemAddress, ItemEvent, User } from '@prisma/client';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateItemDto {
@@ -9,11 +10,20 @@ export class CreateItemDto {
   @IsOptional()
   userId?: number;
 
+  @IsString()
+  @IsOptional()
+  color?: string;
+
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsNotEmpty()
   price: number;
 
-  @IsString()
   @IsOptional()
-  color?: string;
+  address?: ItemAddress;
+
+  @IsOptional()
+  custodian?: User;
+
+  @IsOptional()
+  events: ItemEvent[];
 }

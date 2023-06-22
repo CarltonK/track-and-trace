@@ -8,12 +8,27 @@ import { Item } from '@prisma/client';
 export class ItemsService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
-  ) {}
+  ) { }
   async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
-      const { price, addressId, color, userId } = createItemDto;
+      const { price, addressId, color, userId, address } = createItemDto;
       return await this._prismaService.item.create({
-        data: { price, color, userId, addressId },
+        data: {
+          price,
+          color,
+          address: {
+            connectOrCreate: {
+              where: { id: addressId },
+              create: { ...address },
+            },
+          },
+          custodian: {
+            connect: { id: userId },
+          },
+          events: {
+            create: { title: 'Item created' },
+          },
+        },
       });
     } catch (error) {
       throw new BadRequestException({
@@ -25,7 +40,9 @@ export class ItemsService {
 
   async findAll(): Promise<Item[]> {
     try {
-      return await this._prismaService.item.findMany();
+      return await this._prismaService.item.findMany({
+        include: { address: true, custodian: true, events: true },
+      });
     } catch (error) {
       throw new BadRequestException({
         status: false,
@@ -38,6 +55,7 @@ export class ItemsService {
     try {
       return await this._prismaService.item.findFirst({
         where: { id },
+        include: { address: true, custodian: true, events: true },
       });
     } catch (error) {
       throw new BadRequestException({
@@ -49,9 +67,22 @@ export class ItemsService {
 
   async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
+      const { price, color, userId, address } = updateItemDto;
       return await this._prismaService.item.update({
         where: { id },
-        data: { ...updateItemDto },
+        data: {
+          price,
+          color,
+          address: { 
+            update: { ...address },
+          },
+          custodian: {
+            update: { id: userId }
+          },
+          events: {
+            create: { title: 'Item updated' }
+          }
+        },
       });
     } catch (error) {
       throw new BadRequestException({
