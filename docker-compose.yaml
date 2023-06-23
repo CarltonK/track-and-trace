@@ -61,7 +61,9 @@ services:
       - backend
     volumes:
       # Binds volume to enable working through docker locally
-      - '.:/app'
+      - type: bind
+        source: ./frontend
+        target: /usr/src/app
     networks:
       frontend-network:
         ipv4_address: 172.46.0.3
