@@ -35,6 +35,12 @@ services:
       - type: bind
         source: ./backend/tsconfig.json
         target: /app/tsconfig.json
+      - type: bind
+        source: ./backend/prisma/
+        target: /app/prisma/
+      - type: bind
+        source: ./backend/services/
+        target: /app/services/
     networks:
       track-and-trace-network:
         ipv4_address: 172.45.0.2

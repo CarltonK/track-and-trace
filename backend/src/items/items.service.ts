@@ -8,7 +8,7 @@ import { Item } from '@prisma/client';
 export class ItemsService {
   constructor(
     @Inject(PrismaService) private readonly _prismaService: PrismaService,
-  ) { }
+  ) {}
   async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
       return await this._prismaService.item.create({
@@ -48,7 +48,11 @@ export class ItemsService {
     try {
       return await this._prismaService.item.findFirst({
         where: { id },
-        include: { address: true, custodian: true, events: { orderBy: { createdAt: 'desc' } } },
+        include: {
+          address: true,
+          custodian: true,
+          events: { orderBy: { createdAt: 'desc' } },
+        },
       });
     } catch (error) {
       throw new BadRequestException({
@@ -66,10 +70,10 @@ export class ItemsService {
       if (custodian) {
         emailAddress = custodian.emailAddress;
       }
-      
+
       let addressId: number | null | undefined;
       if (address) {
-         addressId = address.id;
+        addressId = address.id;
       }
 
       return await this._prismaService.item.update({
@@ -77,18 +81,22 @@ export class ItemsService {
         data: {
           price,
           color,
-          address: address ? {
-            connectOrCreate: {
-              create: { ...address },
-              where: { id: addressId },
-            }
-          }: undefined,
-          custodian: custodian ? {
-            connectOrCreate: {
-              where: { ...custodian },
-              create: { emailAddress },
-            }
-          }: undefined,
+          address: address
+            ? {
+                connectOrCreate: {
+                  create: { ...address },
+                  where: { id: addressId },
+                },
+              }
+            : undefined,
+          custodian: custodian
+            ? {
+                connectOrCreate: {
+                  where: { ...custodian },
+                  create: { emailAddress },
+                },
+              }
+            : undefined,
           events: {
             create: { title: title ? title : 'Item updated' },
           },

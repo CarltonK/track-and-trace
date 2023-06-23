@@ -1,16 +1,17 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateItemDto } from './create-item.dto';
 import { IsOptional, IsString } from 'class-validator';
-import { ItemAddress, User } from '@prisma/client';
+import { CreateUserDto } from './../../users/dto/create-user.dto';
+import { CreateUpdateItemAddressDto } from './create-update-item-address.dto';
 
 export class UpdateItemDto extends PartialType(CreateItemDto) {
-    @IsOptional()
-    address?: ItemAddress;
+  @IsOptional()
+  address?: CreateUpdateItemAddressDto;
 
-    @IsOptional()
-    custodian?: User;
+  @IsOptional()
+  custodian?: CreateUserDto;
 
-    @IsString()
-    @IsOptional()
-    title?: string;
+  @IsString()
+  @IsOptional()
+  title?: string;
 }
