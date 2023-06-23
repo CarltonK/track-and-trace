@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { PrismaService } from './../../services/prisma/prisma.service';
-import { Item } from '@prisma/client';
+import { Item, ItemEvent } from '@prisma/client';
 
 @Injectable()
 export class ItemsService {
@@ -62,19 +62,31 @@ export class ItemsService {
     }
   }
 
+  async findItemEvents(id: number): Promise<ItemEvent[]> {
+    try {
+      return await this._prismaService.itemEvent.findMany({
+        where: { item: { id } },
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (error) {
+      throw new BadRequestException({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+
   async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
-      const { price, color, custodian, address, title } = updateItemDto;
-
-      let emailAddress: string | null | undefined;
-      if (custodian) {
-        emailAddress = custodian.emailAddress;
-      }
-
-      let addressId: number | null | undefined;
-      if (address) {
-        addressId = address.id;
-      }
+      const { price, color, title, emailAddress } = updateItemDto;
+      const { country, county, town, latitude, longitude } = updateItemDto;
+      const address: Record<string, any> | undefined = {
+        country,
+        county,
+        town,
+        latitude,
+        longitude,
+      };
 
       return await this._prismaService.item.update({
         where: { id },
@@ -83,17 +95,14 @@ export class ItemsService {
           color,
           address: address
             ? {
-                connectOrCreate: {
-                  create: { ...address },
-                  where: { id: addressId },
-                },
+                create: { ...address },
               }
             : undefined,
-          custodian: custodian
+          custodian: emailAddress
             ? {
                 connectOrCreate: {
-                  where: { ...custodian },
                   create: { emailAddress },
+                  where: { emailAddress },
                 },
               }
             : undefined,

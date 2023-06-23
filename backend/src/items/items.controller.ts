@@ -56,6 +56,18 @@ export class ItemsController {
     });
   }
 
+  @Get(':id/events')
+  @HttpCode(200)
+  @Header('Content-Type', 'application/json')
+  async findItemEvents(@Res() res: Response, @Param('id') id: string) {
+    const events = await this._itemsService.findItemEvents(+id);
+    return res.status(HttpStatus.OK).json({
+      status: true,
+      message: 'Item events fetched successfully',
+      events,
+    });
+  }
+
   @Patch(':id')
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
