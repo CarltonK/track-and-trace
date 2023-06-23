@@ -8,7 +8,7 @@ services:
     volumes:
       - track-and-trace:/var/lib/postgresql/data
     networks:
-      track-and-trace-network:
+      backend-network:
         ipv4_address: 172.45.0.3
     ports:
       - 5432:5432
@@ -42,18 +42,43 @@ services:
         source: ./backend/services/
         target: /app/services/
     networks:
-      track-and-trace-network:
+      backend-network:
         ipv4_address: 172.45.0.2
+      frontend-network:
+        ipv4_address: 172.46.0.2
+    ports:
+      - 5000:5000
+    environment:
+      NODE_ENV: 'local'
+      PORT: 5000
+      DATABASE_URL: 'postgresql://user:password@172.45.0.1:5432/db?schema=public'
+  frontend:
+    container_name: frontend_app
+    build:
+      context: ./frontend
+      dockerfile: docker/dev.Dockerfile
+    depends_on:
+      - backend
+    volumes:
+      # Binds volume to enable working through docker locally
+      - '.:/app'
+    networks:
+      frontend-network:
+        ipv4_address: 172.46.0.3
     ports:
       - 3000:3000
     environment:
-      PORT: 3000
-      DATABASE_URL: 'postgresql://user:password@172.45.0.1:5432/db?schema=public'
+      NODE_ENV: 'local'
 volumes:
   track-and-trace:
 networks:
-  track-and-trace-network:
+  backend-network:
     ipam:
       driver: default
       config:
         - subnet: 172.45.0.0/16
+  frontend-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.46.0.0/16
