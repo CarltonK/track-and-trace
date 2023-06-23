@@ -26,4 +26,4 @@ echo "* Deploy *"
 echo "************************"
 echo
 
-yes | gcloud beta run services replace service.yaml --platform=managed
+yes | gcloud beta run services replace backend/service.yaml --platform=managed
