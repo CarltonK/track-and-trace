@@ -4,7 +4,7 @@ steps:
     entrypoint: sh
     args:
       [
-        "/workspace/cloudbuild/scripts/build.sh",
+        "/workspace/backend/cloudbuild/scripts/build.sh",
         "$PROJECT_ID",
         "${_PROJECT_SERVICE}",
         "$COMMIT_SHA",
@@ -14,7 +14,7 @@ steps:
     entrypoint: sh
     args:
       [
-        "/workspace/cloudbuild/scripts/deploy.sh",
+        "/workspace/backend/cloudbuild/scripts/deploy.sh",
         "${_PROJECT_SERVICE}",
         "$PROJECT_ID",
         "$LOCATION",
