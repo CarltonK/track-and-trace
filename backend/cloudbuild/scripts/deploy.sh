@@ -14,10 +14,10 @@ echo "* Variable subsitituion *"
 echo "************************"
 echo
 
-awk '{gsub(/<CONTAINER_IMAGE>/,"gcr.io/'$2'/'$1':'$4'")}1' /workspace/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/service.yaml
-awk '{gsub(/<PROJECT_SERVICE>/,"'$1'")}1' /workspace/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/service.yaml
-awk '{gsub(/<DATABASE_URL>/,"'${5}'")}1' /workspace/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/service.yaml
-awk '{gsub(/<GOOGLE_CLOUD_PROJECT>/,"'$2'")}1' /workspace/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/service.yaml
+awk '{gsub(/<CONTAINER_IMAGE>/,"gcr.io/'$2'/'$1':'$4'")}1' /workspace/backend/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/backend/service.yaml
+awk '{gsub(/<PROJECT_SERVICE>/,"'$1'")}1' /workspace/backend/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/backend/service.yaml
+awk '{gsub(/<DATABASE_URL>/,"'${5}'")}1' /workspace/backend/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/backend/service.yaml
+awk '{gsub(/<GOOGLE_CLOUD_PROJECT>/,"'$2'")}1' /workspace/backend/service.yaml >/workspace/tmp.yaml && mv /workspace/tmp.yaml /workspace/backend/service.yaml
 
 
 echo
