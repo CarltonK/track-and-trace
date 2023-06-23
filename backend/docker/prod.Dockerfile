@@ -1,3 +1,6 @@
+############################
+# STAGE 1: Build artifacts #
+############################
 FROM node:18.15-alpine As build
 
 # See https://github.com/prisma/prisma/issues/13717
@@ -19,7 +22,9 @@ ENV NODE_ENV production
 RUN npm ci --only=production && npm cache clean --force
 
 USER node
-
+#################################
+# STAGE 2: Take build artifacts #
+#################################
 FROM node:18.15-alpine As production
 
 # See https://github.com/prisma/prisma/issues/13717
