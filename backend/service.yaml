@@ -1,0 +1,28 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+  name: "<PROJECT_SERVICE>"
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      timeoutSeconds: 300
+      containers:
+        - image: <CONTAINER_IMAGE>
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DATABASE_URL
+              value: "<DATABASE_URL>"
+            - name: GOOGLE_CLOUD_PROJECT
+              value: "<GOOGLE_CLOUD_PROJECT>"
+  traffic:
+    - latestRevision: true
+      percent: 100
