@@ -6,7 +6,7 @@ import { PrismaService } from 'services/prisma/prisma.service';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const PORT = process.env.NODE_ENV || 3000;
+  const PORT = process.env.PORT || 5000;
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
