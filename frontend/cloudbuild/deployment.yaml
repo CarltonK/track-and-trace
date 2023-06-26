@@ -1,0 +1,26 @@
+steps:
+  - id: "Build"
+    name: "gcr.io/cloud-builders/docker"
+    entrypoint: sh
+    args:
+      [
+        "/workspace/frontend/cloudbuild/scripts/build.sh",
+        "$PROJECT_ID",
+        "${_PROJECT_SERVICE}",
+        "$COMMIT_SHA",
+      ]
+  - id: "Deploy"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: sh
+    args:
+      [
+        "/workspace/frontend/cloudbuild/scripts/deploy.sh",
+        "${_PROJECT_SERVICE}",
+        "$PROJECT_ID",
+        "$LOCATION",
+        "$COMMIT_SHA",
+        "${_API_URL}",
+      ]
+images:
+  - "gcr.io/$PROJECT_ID/${_PROJECT_SERVICE}:$COMMIT_SHA"
+timeout: 1000s

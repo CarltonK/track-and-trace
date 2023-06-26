@@ -25,16 +25,16 @@ RUN npm prune --omit=dev
 #################################
 # STAGE 2: Take build artifacts #
 #################################
-FROM nginx:stable-alpine As production
-ENV NODE_ENV production
+FROM node:18.15-alpine As production
 
-# remove existing files from nginx directory
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /usr/src/app
 
-COPY --from=build /app/.next /usr/share/nginx/html
-COPY --from=build /app/docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next ./.next
 
-EXPOSE 80
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# start app
+CMD ["npm", "start"]
