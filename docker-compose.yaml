@@ -71,7 +71,7 @@ services:
       - 3000:3000
     environment:
       NODE_ENV: 'local'
-      API_URL: 'http://172.46.0.2:5000'
+      API_URL: 'http://172.46.0.2:5000/'
 volumes:
   track-and-trace:
 networks:

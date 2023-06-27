@@ -13,8 +13,8 @@ async function PostItem(data: FormData) {
   const body = JSON.stringify({ color, price });
 
   try {
-    const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app';
-    const res = await fetch(`${baseUrl}/items`, {
+    const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/';
+    const res = await fetch(`${baseUrl}items`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body,
