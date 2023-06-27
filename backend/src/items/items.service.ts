@@ -40,6 +40,7 @@ export class ItemsService {
           custodian: true,
           events: { orderBy: { createdAt: 'desc' } },
         },
+        orderBy: { id: 'desc' }
       });
     } catch (error) {
       throw new BadRequestException({
@@ -84,7 +85,7 @@ export class ItemsService {
   async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
       const { color, title, emailAddress } = updateItemDto;
-      let price: any | undefined  = updateItemDto.price;
+      let price: any | undefined = updateItemDto.price;
 
       if (price) price = Number(price);
       const { country, county, town, latitude, longitude } = updateItemDto;
