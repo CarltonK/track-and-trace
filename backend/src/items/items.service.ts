@@ -40,7 +40,7 @@ export class ItemsService {
           custodian: true,
           events: { orderBy: { createdAt: 'desc' } },
         },
-        orderBy: { id: 'desc' }
+        orderBy: { id: 'desc' },
       });
     } catch (error) {
       throw new BadRequestException({

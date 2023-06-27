@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 // create
 
-export async function PostItem(data: FormData) {
+async function PostItem(data: FormData) {
   "use server"
 
   const color = data.get('color');
