@@ -3,8 +3,8 @@ import { useSearchParams } from "next/navigation";
 
 // fetch-items
 async function getItemEvents(id: any) {
-    const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/';
-    const res = await fetch(`${baseUrl}items/${id}/events`)
+    const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app';
+    const res = await fetch(`${baseUrl}/items/${id}/events`)
     // handle errors
     if (!res.ok) {
         throw new Error('Failed to fetch data')

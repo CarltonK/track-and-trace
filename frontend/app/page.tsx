@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 // fetch-items
 async function getData() {
-  const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/';
-  const res = await fetch(`${baseUrl}items`)
+  const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app';
+  const res = await fetch(`${baseUrl}/items`)
   // handle errors
   if (!res.ok) {
     throw new Error('Failed to fetch data')
