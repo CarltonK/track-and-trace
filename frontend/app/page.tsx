@@ -1,13 +1,7 @@
+"use client";
 import Link from 'next/link';
-// import PostItem from '../app/submitData';
 
-// ===== api-service:  to split later...
-// create-item 
-// read
-// update 
-
-
-// read/fetch-items
+// fetch-items
 async function getData() {
   const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/';
   const res = await fetch(`${baseUrl}items`)
@@ -18,21 +12,9 @@ async function getData() {
   return res.json();
 }
 
-// update-items
-// async function updateItem(id: number) {
-// 	const res = await fetch(`https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/items/${id}`)
-// 	// handle errors
-// 	if (!res.ok) {
-// 	  throw new Error('Failed to update data')
-// 	}
-// 	return res.json()
-//   }
-
 export default async function Home() {
   const items = await getData();
   const itemDestructured = items.items
-  console.log('=========== loggin items === ', typeof items.items, items.items)
-
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -64,43 +46,24 @@ export default async function Home() {
         </div>
       </div>
       {itemDestructured.map((item: any) => {
-        return <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left" key={item}>
-          <div
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          >
-            <h2 className={`mb-3 text-2xl font-semibold`}>
-              {item.id} &nbsp; {item.color}
-              {/* <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+        return <Link href={{ pathname: '/events', query: { id: item.id } }} key={item}>
+          <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
+            <div
+              className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+            >
+              <h2 className={`mb-3 text-2xl font-semibold`}>
+                {item.id} &nbsp; {item.color}
+                {/* <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span> */}
-            </h2>
-            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-              Find in-depth information about Next.js features and API.
-            </p>
+              </h2>
+              <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                Find in-depth information about Next.js features and API.
+              </p>
+            </div>
           </div>
-
-
-        </div>
+        </Link>
       })}
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-
-        <div
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </div>
-
-
-      </div>
     </main>
   )
 }
