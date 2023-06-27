@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export async function getData() {
+async function getData() {
   const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app';
   const res = await fetch(`${baseUrl}/items`)
   // handle errors
