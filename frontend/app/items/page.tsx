@@ -1,9 +1,5 @@
 import Link from 'next/link';
 
-
-
-// create
-
 async function PostItem(data: FormData) {
   "use server"
 
@@ -19,7 +15,7 @@ async function PostItem(data: FormData) {
       headers: { 'Content-Type': 'application/json' },
       body,
     });
-    await res.json();
+    const result = await res.json();
   } catch (error) {
     console.log('====error ', error)
   }
@@ -27,46 +23,6 @@ async function PostItem(data: FormData) {
 
 export default async function ItemDataPage() {
   'use client'
-  // to later choose best betweem server-side-action and client-side-action
-
-  //   const postItem = async(event: any)=>{
-  // // Stop the form from submitting and refreshing the page.
-  // event.preventDefault();
-  // // data from form
-  // const formItems = {
-  //   color: event.target.color.value,
-  //   price: parseFloat(event.target.price.value).toFixed(2)
-  // }
-  // const JSONdata = JSON.stringify(formItems)
-  //   }
-
-  // async function postItem(data: any) {
-  //   "use server"
-  //   console.log('============ itemData = = = ', data)
-  //   const itemData = {
-  //       "color": cookies.length()data.color,
-  //       "price": parseFloat(data.price).toFixed(2)
-  //   }
-
-  //   const cartId = cookies().get('cartId')?.value
-  //   await saveToDb({ cartId, data })
-
-
-  //   const res = await fetch('https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/items',{
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-
-  //   // handle errors
-  //   if (!res.ok) {
-  //     throw new Error('Failed to post data')
-  //   }
-  //   return res.json()
-  //   }
-
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
       <div className='z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex'>
@@ -142,73 +98,3 @@ export default async function ItemDataPage() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// import Link from 'next/link'
-// import { FormEvent } from 'react'
-// // import styles from '../styles/Home.module.css'
-
-// export default function PageWithJSbasedForm() {
-//   'use server';
-//   // Handle the submit event on form submit.
-//   const handleSubmit = async (event: FormEvent) => {
-//     // Stop the form from submitting and refreshing the page.
-//     event.preventDefault()
-
-//     // Cast the event target to an html form
-//     const form = event.target as HTMLFormElement
-
-//     // Get data from the form.
-//     const data = {
-//       color: form.color.value as string,
-//       price: form.price.value as string,
-//     }
-
-//     // Send the form data to our API and get a response.
-//     const response = await fetch('https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/items', {
-//       // Body of the request is the JSON data we created above.
-//       body: JSON.stringify(data),
-//       // Tell the server we're sending JSON.
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       // The method is POST because we are sending data.
-//       method: 'POST',
-//     })
-
-//     // Get the response data from server as JSON.
-//     // If server returns the name submitted, that means the form works.
-//     const result = await response.json()
-//     alert(`Is this your full name: ${result.data}`)
-//   }
-//   return (
-//     <div className="container">
-//       <h1 >
-//         Form <Link href="/">with</Link> JavaScript.
-//       </h1>
-
-//       <p>
-//         Get started by looking at{' '}
-//         <code>pages/js-form.js</code>
-//       </p>
-
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor="color">First Name</label>
-//         <input type="text" id="color" name="color" required />
-//         <label htmlFor="last">Last Name</label>
-//         <input type="number" id="price" name="price" required />
-//         <button type="submit">Submit</button>
-//       </form>
-//     </div>
-//   )
-// }

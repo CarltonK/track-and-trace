@@ -1,10 +1,8 @@
-"use client";
 import Link from 'next/link';
 
-// fetch-items
-async function getData() {
-  const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app/';
-  const res = await fetch(`${baseUrl}items`)
+export async function getData() {
+  const baseUrl = process.env.API_URL || 'https://track-and-trace-api-v7gpzuhw2a-ew.a.run.app';
+  const res = await fetch(`${baseUrl}/items`)
   // handle errors
   if (!res.ok) {
     throw new Error('Failed to fetch data')
@@ -14,7 +12,7 @@ async function getData() {
 
 export default async function Home() {
   const items = await getData();
-  const itemDestructured = items.items
+  const itemDestructured: [] = items.items;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -43,27 +41,58 @@ export default async function Home() {
               Track and Trace your item here...
             </p>
           </Link>
+
         </div>
       </div>
-      {itemDestructured.map((item: any) => {
-        return <Link href={{ pathname: '/events', query: { id: item.id } }} key={item}>
-          <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-            <div
-              className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-            >
-              <h2 className={`mb-3 text-2xl font-semibold`}>
-                {item.id} &nbsp; {item.color}
-                {/* <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+
+      {/* dynamic-card-item here */}
+      <div className='mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left'>
+
+        {itemDestructured.map((item: any) => {
+          return (
+            <Link href={{ pathname: '/events', query: { id: item.id } }} key={item}>
+              <div className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
+                <h4 className={`mb-3 text-2xl font-semibold`}>
+                  {item.id} &nbsp; {item.color}
+                </h4>
+                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                  item-price: {item.price}
+                </p>
+                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                  Created at: &nbsp; {item.createdAt}
+                </p>
+                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                  {/* Owned by: &nbsp;  {item.custodian["emailAddress"]} */}
+                  {/* to add inner objects later */}
+                </p>
+                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                  {/* LocationDetails: &nbsp; {item.address.id}  */}
+                  {/* to add inner objects later */}
+                </p>
+                <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                  to later style and make dynamic components: based on null or not values...
+                </p>
+              </div>
+            </Link>
+          );
+        })};
+      </div>
+
+      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
+        <div
+          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+        >
+          <h2 className={`mb-3 text-2xl font-semibold`}>
+            Docs{' '}
+            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
-            </span> */}
-              </h2>
-              <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                Find in-depth information about Next.js features and API.
-              </p>
-            </div>
-          </div>
-        </Link>
-      })}
+            </span>
+          </h2>
+          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+            Find in-depth information about Next.js features and API.
+          </p>
+        </div>
+      </div>
     </main>
   )
 }
