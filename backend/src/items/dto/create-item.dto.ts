@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateItemDto {
   @IsString()
   @IsOptional()
   color?: string;
 
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsString()
   @IsNotEmpty()
-  price: number;
+  price: string;
 }

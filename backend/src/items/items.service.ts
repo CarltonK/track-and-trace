@@ -11,9 +11,14 @@ export class ItemsService {
   ) {}
   async create(createItemDto: CreateItemDto): Promise<Item> {
     try {
+      const { color } = createItemDto;
+      let price: any = createItemDto.price;
+
+      price = Number(price);
       return await this._prismaService.item.create({
         data: {
-          ...createItemDto,
+          color,
+          price,
           events: {
             create: { title: 'Item created' },
           },
@@ -78,7 +83,10 @@ export class ItemsService {
 
   async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     try {
-      const { price, color, title, emailAddress } = updateItemDto;
+      const { color, title, emailAddress } = updateItemDto;
+      let price: any | undefined  = updateItemDto.price;
+
+      if (price) price = Number(price);
       const { country, county, town, latitude, longitude } = updateItemDto;
       const address: Record<string, any> | undefined = {
         country,
