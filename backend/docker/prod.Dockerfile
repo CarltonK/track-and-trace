@@ -19,7 +19,7 @@ RUN npm run build
 
 # Cleanup node modules to be production only
 ENV NODE_ENV production
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 
 USER node
 #################################
