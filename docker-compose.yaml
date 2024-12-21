@@ -3,9 +3,7 @@ version: '3.6'
 services:
   database:
     container_name: backend_db
-    image: postgres:14
-    restart: unless-stopped
-    volumes:
+    image: postgres:17
       - track-and-trace:/var/lib/postgresql/data
     networks:
       backend-network:
@@ -51,7 +49,7 @@ services:
     environment:
       NODE_ENV: 'local'
       PORT: 5000
-      DATABASE_URL: 'postgresql://user:password@172.45.0.1:5432/db?schema=public'
+      DATABASE_URL: 'postgresql://user:password@172.45.0.3:5432/db?schema=public'
   frontend:
     container_name: frontend_app
     build:
